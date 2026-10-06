@@ -132,14 +132,52 @@ app.post('/api/owner/register', (req, res) => {
 app.post('/api/owner/login', (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('=== Login iniciado ===');
+    console.log('Email recebido:', email);
+    console.log('Senha recebida:', password);
+
     const result = db.exec('SELECT * FROM owners WHERE email = ?', [email]);
+    console.log('Resultado bruto da query:', JSON.stringify(result));
+
     const owner = result[0]?.values[0];
-    if (!owner || !bcrypt.compareSync(password, owner[3])) {
+    console.log('Owner encontrado:', owner);
+
+    if (!owner) {
+      console.log('❌ Usuário não encontrado no banco');
       return res.status(401).json({ error: 'Email ou senha incorretos' });
     }
+
+    console.log('Owner ID:', owner[0]);
+    console.log('Restaurant name:', owner[1]);
+    console.log('Email no DB:', owner[2]);
+    console.log('Hash no DB:', owner[3]);
+    console.log('Tipo do hash:', typeof owner[3]);
+    console.log('Comprimento do hash:', owner[3]?.length);
+
+    console.log('Comparando senhas...');
+    console.log('Senha plana:', password);
+    console.log('Tipo da senha plana:', typeof password);
+
+    let passwordMatch = false;
+    try {
+      passwordMatch = bcrypt.compareSync(password, owner[3]);
+      console.log('Resultado de bcrypt.compareSync:', passwordMatch);
+    } catch (bcryptError) {
+      console.error('❌ Erro ao comparar senhas com bcrypt:', bcryptError.message);
+      return res.status(500).json({ error: 'Erro ao verificar senha: ' + bcryptError.message });
+    }
+
+    if (!passwordMatch) {
+      console.log('❌ Senha não correspondeu');
+      return res.status(401).json({ error: 'Email ou senha incorretos' });
+    }
+
+    console.log('✅ Senha correta, gerando token...');
     const token = jwt.sign({ ownerId: owner[0] }, JWT_SECRET, { expiresIn: '24h' });
+    console.log('Token gerado:', token);
     res.json({ id: owner[0], restaurant_name: owner[1], token });
   } catch (error) {
+    console.error('❌ Erro não tratado no login:', error);
     res.status(500).json({ error: error.message });
   }
 });

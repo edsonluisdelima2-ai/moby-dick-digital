@@ -20,6 +20,11 @@ async function seedDatabase() {
   console.log('🔄 Criando dados de exemplo para Moby Dick...\n');
 
   const hashedPassword = bcrypt.hashSync('moby123', 10);
+  console.log('📝 Hash da senha criado com sucesso');
+  console.log('   Senha plana: moby123');
+  console.log('   Hash gerado:', hashedPassword);
+  console.log('   Tipo do hash:', typeof hashedPassword);
+  console.log('   Comprimento do hash:', hashedPassword.length);
 
   try {
     db.run(`DELETE FROM images WHERE establishment_id > 0`);
@@ -28,13 +33,35 @@ async function seedDatabase() {
     db.run(`DELETE FROM establishments WHERE owner_id > 0`);
     db.run(`DELETE FROM owners`);
 
+    console.log('🗑️  Tabelas limpas');
+
     db.run(
       'INSERT INTO owners (restaurant_name, email, password) VALUES (?, ?, ?)',
       ['Moby Dick', 'moby@example.com', hashedPassword]
     );
 
+    console.log('💾 Usuário teste inserido:');
+    console.log('   Email: moby@example.com');
+    console.log('   Senha: moby123');
+
     const ownerResult = db.exec('SELECT last_insert_rowid() as id');
     const ownerId = ownerResult[0]?.values[0]?.[0] || 1;
+
+    console.log('✅ Owner ID:', ownerId);
+
+    // Verificar que o usuário foi realmente inserido
+    const verifyResult = db.exec('SELECT * FROM owners WHERE email = ?', ['moby@example.com']);
+    if (verifyResult[0]) {
+      const verifyOwner = verifyResult[0].values[0];
+      console.log('🔍 Verificação do usuário inserido:');
+      console.log('   ID:', verifyOwner[0]);
+      console.log('   Restaurant:', verifyOwner[1]);
+      console.log('   Email:', verifyOwner[2]);
+      console.log('   Hash armazenado:', verifyOwner[3]);
+      console.log('   Hash corresponde?', verifyOwner[3] === hashedPassword);
+    } else {
+      console.error('❌ ERRO: Usuário não foi encontrado após inserção!');
+    }
 
     db.run(
       'INSERT INTO establishments (owner_id, restaurant_name, slug, address, whatsapp, google_maps_url) VALUES (?, ?, ?, ?, ?, ?)',
