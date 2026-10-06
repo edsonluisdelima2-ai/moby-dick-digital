@@ -231,6 +231,40 @@ app.post('/api/owner/logout', (req, res) => {
   res.json({ success: true });
 });
 
+app.put('/api/owner/password', requireAuth, (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Senha atual e nova senha são obrigatórias' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: 'Nova senha deve ter no mínimo 6 caracteres' });
+    }
+
+    const owner = execSelectOne('SELECT * FROM owners WHERE id = ?', [req.ownerId]);
+
+    if (!owner) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    const passwordMatch = bcrypt.compareSync(currentPassword, owner[3]);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Senha atual incorreta' });
+    }
+
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+    db.run('UPDATE owners SET password = ? WHERE id = ?', [hashedPassword, req.ownerId]);
+    saveDB();
+
+    res.json({ success: true, message: 'Senha alterada com sucesso' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/api/owner/me', requireAuth, (req, res) => {
   try {
     const owner = execSelectOne('SELECT id, restaurant_name, email FROM owners WHERE id = ?', [req.ownerId]);
