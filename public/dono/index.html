@@ -256,17 +256,34 @@
 
   <script>
     let currentEstablishment = null;
+    let authToken = localStorage.getItem('authToken');
 
     window.addEventListener('load', checkAuth);
 
+    async function apiCall(url, options = {}) {
+      const headers = options.headers || {};
+      if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+      return fetch(url, { ...options, headers });
+    }
+
     async function checkAuth() {
+      authToken = localStorage.getItem('authToken');
+      if (!authToken) {
+        showLoginSection();
+        return;
+      }
       try {
-        const response = await fetch('/api/owner/me', { credentials: 'include' });
+        const response = await apiCall('/api/owner/me', {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
         if (response.ok) {
           const owner = await response.json();
           showMainSection();
           loadEstablishments();
         } else {
+          localStorage.removeItem('authToken');
           showLoginSection();
         }
       } catch (error) {
@@ -294,14 +311,16 @@
       const statusDiv = document.getElementById('login-status');
 
       try {
-        const response = await fetch('/api/owner/login', {
+        const response = await apiCall('/api/owner/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
           body: JSON.stringify({ email, password })
         });
 
         if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem('authToken', data.token);
+          authToken = data.token;
           statusDiv.innerHTML = '<div class="status success">✓ Bem-vindo!</div>';
           setTimeout(checkAuth, 800);
         } else {
@@ -313,8 +332,9 @@
     }
 
     async function logout() {
-      await fetch('/api/owner/logout', { method: 'POST', credentials: 'include' });
-      checkAuth();
+      localStorage.removeItem('authToken');
+      authToken = null;
+      showLoginSection();
     }
 
     function switchTab(tabName, e) {
@@ -327,7 +347,7 @@
 
     async function loadEstablishments() {
       try {
-        const response = await fetch('/api/establishments', { credentials: 'include' });
+        const response = await apiCall('/api/establishments');
         const data = await response.json();
         if (data.establishments && data.establishments.length > 0) {
           currentEstablishment = data.establishments[0];
@@ -343,7 +363,7 @@
     async function loadConfig() {
       if (!currentEstablishment) return;
       try {
-        const response = await fetch(`/api/establishments/${currentEstablishment.id}/config`, { credentials: 'include' });
+        const response = await apiCall(`/api/establishments/${currentEstablishment.id}/config`);
         const data = await response.json();
         if (data.establishment) {
           const est = data.establishment;
@@ -361,10 +381,9 @@
       event.preventDefault();
       const statusDiv = document.getElementById('config-status');
       try {
-        const response = await fetch(`/api/establishments/${currentEstablishment.id}`, {
-          method: 'POST',
+        const response = await apiCall(`/api/establishments/${currentEstablishment.id}`, {
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
           body: JSON.stringify({
             restaurant_name: document.getElementById('restaurant_name').value,
             whatsapp: document.getElementById('whatsapp').value,
@@ -385,7 +404,7 @@
     async function loadMenuItems() {
       if (!currentEstablishment) return;
       try {
-        const response = await fetch(`/api/establishments/${currentEstablishment.slug}`, { credentials: 'include' });
+        const response = await apiCall(`/api/establishments/${currentEstablishment.slug}`);
         const data = await response.json();
         const menuList = document.getElementById('menu-list');
         menuList.innerHTML = '';
@@ -410,10 +429,9 @@
     async function addMenuItem(event) {
       event.preventDefault();
       try {
-        const response = await fetch('/api/menu-items', {
+        const response = await apiCall('/api/menu-items', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
           body: JSON.stringify({
             establishment_id: currentEstablishment.id,
             type: document.getElementById('item-type').value,
@@ -434,7 +452,7 @@
     async function loadCustomers() {
       if (!currentEstablishment) return;
       try {
-        const response = await fetch(`/api/customers/${currentEstablishment.id}`, { credentials: 'include' });
+        const response = await apiCall(`/api/customers/${currentEstablishment.id}`);
         const data = await response.json();
         const tbody = document.querySelector('#customers-table tbody');
         tbody.innerHTML = '';
