@@ -3,7 +3,7 @@ services:
     name: moby-dick
     env: node
     plan: free
-    buildCommand: npm install
+    buildCommand: npm install && node scripts/seed-moby-dick.js
     startCommand: npm start
     envVars:
       - key: NODE_ENV
