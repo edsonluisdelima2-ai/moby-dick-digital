@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10100e">
+  <meta name="description" content="Moby Dick Digital — uma vitrine simples para o prato do dia, as ofertas e o contato do restaurante.">
+  <title>Moby Dick Digital — O que tem hoje?</title>
+  <style>
+    :root{color-scheme:dark;--ink:#10100e;--panel:#191916;--panel2:#211f19;--gold:#f4b83f;--gold2:#ffd36d;--cream:#fff7e5;--muted:#b7b1a4;--red:#d9432e;--line:rgba(255,255,255,.1);--max:1120px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}body{margin:0;background:radial-gradient(ellipse at 85% 3%,rgba(201,125,23,.16),transparent 32rem),var(--ink);color:var(--cream);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}a{color:inherit}button,select{font:inherit}button{cursor:pointer}.wrap{width:min(var(--max),calc(100% - 36px));margin:auto}.topbar{position:sticky;top:0;z-index:10;background:rgba(16,16,14,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.topbar-inner{height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}.wordmark{font-size:15px;font-weight:950;letter-spacing:.1em;line-height:1.05}.wordmark span{display:block;color:var(--gold);font-size:10px;font-weight:750;letter-spacing:.16em;margin-top:5px}.nav{display:flex;gap:23px;font-size:13px;color:#e4ddcf}.nav a{text-decoration:none}.nav a:hover{color:var(--gold)}.top-cta,.button{display:inline-flex;justify-content:center;align-items:center;gap:9px;background:var(--gold);color:#17130b;border:0;border-radius:999px;padding:12px 19px;font-weight:850;text-decoration:none;box-shadow:0 7px 22px rgba(244,184,63,.13);transition:transform .18s,background .18s}.top-cta{font-size:13px;padding:10px 16px}.button:hover,.top-cta:hover{background:var(--gold2);transform:translateY(-1px)}.button.secondary{background:#26251f;border:1px solid rgba(244,184,63,.38);color:var(--cream);box-shadow:none}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-size:11px;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.eyebrow:before{content:"";width:18px;height:2px;background:var(--gold)}.hero{padding:50px 0 76px}.hero-grid{display:grid;grid-template-columns:.84fr 1.16fr;gap:52px;align-items:center}.hero h1{font-size:clamp(43px,6vw,72px);line-height:.98;letter-spacing:-.055em;margin:17px 0 17px;max-width:520px}.hero h1 em{font-style:normal;color:var(--gold)}.hero-copy{color:#d3ccbd;max-width:455px;margin:0 0 23px;font-size:16px}.demo-note{display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(244,184,63,.26);border-radius:13px;padding:12px 14px;background:rgba(244,184,63,.06);color:#eadbb7;font-size:12px;margin:22px 0}.demo-note b{color:var(--gold2)}.demo-dot{width:8px;height:8px;flex:0 0 8px;margin-top:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 0 4px rgba(244,184,63,.12)}.actions{display:flex;gap:11px;flex-wrap:wrap}.plate-card{position:relative;background:var(--panel);border:1px solid rgba(244,184,63,.2);border-radius:22px;overflow:hidden;box-shadow:0 28px 90px rgba(0,0,0,.44)}.plate-art{display:block;width:100%;max-height:530px;object-fit:cover;object-position:center 30%;background:#24221e}.plate-meta{display:flex;justify-content:space-between;gap:12px;padding:15px 17px 16px;align-items:center}.plate-meta small{display:block;color:var(--muted);font-size:11px;letter-spacing:.11em;text-transform:uppercase}.plate-meta strong{display:block;color:var(--gold2);font-size:19px}.price{font-size:23px!important;white-space:nowrap}.art-label{position:absolute;top:13px;left:13px;padding:7px 10px;background:rgba(16,16,14,.84);border:1px solid rgba(255,255,255,.2);border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}.update-box{display:none;padding:0 16px 17px}.update-box.open{display:block}.update-row{display:flex;gap:8px}.update-row select{min-width:0;flex:1;background:#10100e;color:var(--cream);border:1px solid #534b39;border-radius:10px;padding:11px}.update-row button{border-radius:10px;padding:10px 13px;background:var(--gold);border:0;color:#18130b;font-weight:850}.small-copy{font-size:11px;color:var(--muted);margin:7px 0 0}.section{padding:70px 0;border-top:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:25px}.section h2{font-size:clamp(31px,4vw,46px);line-height:1.03;letter-spacing:-.04em;margin:11px 0 0}.section-intro{color:var(--muted);font-size:14px;max-width:390px;margin:0}.offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.offer{background:var(--panel);border:1px solid var(--line);border-radius:17px;overflow:hidden}.offer img{width:100%;height:270px;object-fit:cover;object-position:center 28%;display:block}.offer-body{padding:14px 16px 17px}.offer h3{font-size:18px;line-height:1.1;margin:0 0 7px}.offer p{font-size:13px;color:#c8c0b0;margin:0 0 10px}.offer-foot{display:flex;justify-content:space-between;align-items:center;gap:8px}.offer-price{color:var(--gold2);font-weight:900}.stamp{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#dacba9;background:#2b261a;border-radius:999px;padding:5px 8px}.notice{color:#c4b99f;font-size:12px;margin-top:16px}.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.menu-item{display:flex;justify-content:space-between;gap:20px;padding:15px 17px;border-radius:13px;border:1px solid var(--line);background:linear-gradient(105deg,#191916,#151512)}.menu-item h3{font-size:15px;margin:0 0 4px}.menu-item p{margin:0;font-size:12px;color:var(--muted)}.menu-price{color:var(--gold2);font-weight:900;white-space:nowrap}.night-card{display:grid;grid-template-columns:1.12fr .88fr;background:linear-gradient(120deg,#21190f,#181714 70%);border:1px solid rgba(244,184,63,.22);border-radius:20px;overflow:hidden}.night-copy{padding:34px;align-self:center}.night-copy h3{font-size:clamp(28px,4vw,42px);line-height:1.05;letter-spacing:-.04em;margin:12px 0}.night-copy p{color:#d0c7b5;max-width:440px;font-size:14px}.night-price{font-size:27px;font-weight:950;color:var(--gold2);margin:13px 0 20px}.night-card img{width:100%;height:100%;min-height:330px;object-fit:cover;object-position:center 30%}.place-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.place-card{padding:23px;background:var(--panel);border:1px solid var(--line);border-radius:16px}.place-card h3{margin:0 0 8px;font-size:17px}.place-card p{margin:0;color:#d2cbbb;font-size:14px}.place-card .button{margin-top:17px}.address{font-size:16px!important;font-weight:750}.whatsapp{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:26px 28px;margin-top:15px;border-radius:17px;background:linear-gradient(100deg,#f4b83f,#eaa228);color:#19140b}.whatsapp h3{font-size:25px;line-height:1.05;margin:0}.whatsapp p{margin:7px 0 0;font-size:13px;color:#4b3817}.whatsapp .button{background:#15140f;color:#fff;border:1px solid #15140f;box-shadow:none;white-space:nowrap}.footer{padding:30px 0 95px;color:#9f9889;font-size:11px}.footer-inner{display:flex;justify-content:space-between;gap:15px;border-top:1px solid var(--line);padding-top:17px}.bottom-bar{display:none}.icon{font-size:18px}
+    @media(max-width:780px){.nav{display:none}.hero{padding:35px 0 52px}.hero-grid{grid-template-columns:1fr;gap:24px}.hero h1{font-size:49px;max-width:420px;margin-top:13px}.hero-copy{font-size:15px}.plate-art{height:min(112vw,510px);max-height:none;object-position:center 23%}.plate-meta{padding:13px 14px}.section{padding:53px 0}.section-head{display:block}.section-intro{margin-top:12px}.offer-grid{grid-template-columns:1fr 1fr;gap:11px}.offer:last-child{grid-column:span 2}.offer img{height:235px}.offer:last-child img{height:245px;object-position:center 20%}.offer-body{padding:12px}.offer h3{font-size:16px}.offer p{font-size:12px}.stamp{font-size:8px}.menu-grid{grid-template-columns:1fr}.night-card{grid-template-columns:1fr}.night-copy{padding:25px 22px 19px}.night-card img{height:370px;min-height:0;object-position:center 24%}.place-grid{grid-template-columns:1fr}.whatsapp{align-items:flex-start;flex-direction:column;padding:23px}.whatsapp h3{font-size:23px}.footer{padding-bottom:105px}.footer-inner{display:block}.footer-inner span{display:block;margin:5px 0}.bottom-bar{display:flex;position:fixed;z-index:11;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(16,16,14,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line)}.bottom-bar .button{width:100%;padding:13px}}
+    @media(max-width:390px){.wrap{width:calc(100% - 26px)}.hero h1{font-size:44px}.actions .button{width:100%}.offer-grid{grid-template-columns:1fr}.offer:last-child{grid-column:auto}.offer img,.offer:last-child img{height:340px}.price{font-size:20px!important}.plate-meta strong{font-size:17px}}
+  </style>
+  <style id="full-artwork-display">
+    /* Preserve the complete tall promotional artwork; never crop embedded copy or logos. */
+    .plate-art{display:block;width:min(100%,430px);height:auto!important;max-height:none!important;object-fit:contain!important;object-position:center;margin:0 auto;background:#171511}
+    .art-label{left:calc(50% - 202px)}
+    .offer img,.offer:last-child img{display:block;width:100%;height:auto!important;max-height:none!important;aspect-ratio:auto;object-fit:contain!important;object-position:center!important;background:#171511}
+    .night-card img{display:block;width:min(100%,420px);height:auto!important;min-height:0!important;max-height:none!important;object-fit:contain!important;object-position:center!important;justify-self:center;align-self:center;background:#171511}
+    @media(max-width:780px){.art-label{left:13px}}
+  </style>
+  <style>
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:0 0 auto}.brand-seal{display:block;width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);background-image:url("media/prato-sobrecoxa.png");background-repeat:no-repeat;background-size:53% auto;background-position:95% 5%;box-shadow:0 0 15px #f4b83f45}.signup-card,.qr-card{margin-top:24px;border:1px solid rgba(244,184,63,.25);border-radius:18px;background:var(--panel);padding:22px}.signup-card{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end}.signup-heading{grid-column:1/-1}.signup-heading h3,.qr-card h3{font-size:23px;line-height:1.12;margin:8px 0}.signup-heading p,.qr-card p{font-size:13px;color:var(--muted);margin:0}.signup-card label{display:grid;gap:6px;font-size:12px;font-weight:750;color:#e9dfca}.signup-card input{width:100%;border:1px solid #554b37;background:#10100e;border-radius:10px;color:var(--cream);padding:12px}.signup-card input:focus{outline:2px solid var(--gold)}.signup-card>button{grid-column:1/-1;justify-self:start}.signup-note,.signup-status{grid-column:1/-1;margin:0;font-size:11px;color:var(--muted)}.qr-card{display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(115deg,#201b12,#171714)}.qr-card>div{max-width:500px}.qr-card img{display:block;width:132px;height:132px;padding:8px;border-radius:12px;background:white;object-fit:contain}.qr-link{display:inline-block;margin-top:10px;color:var(--gold2);font-size:13px;font-weight:800;text-decoration:none}.signup-card .button{white-space:normal}
+    @media(max-width:780px){.brand-seal{width:39px;height:39px}.brand{gap:8px}.wordmark{font-size:12px}.wordmark span{font-size:8px;letter-spacing:.12em}.signup-card{grid-template-columns:1fr}.signup-heading,.signup-card>button,.signup-note,.signup-status{grid-column:1}.signup-card>button{width:100%}.qr-card{align-items:flex-start}.qr-card img{width:104px;height:104px;flex:0 0 104px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#inicio" aria-label="Moby Dick Digital, início"><span class="brand-seal" aria-hidden="true"></span><span class="wordmark">MOBY DICK<span>AQUI SE VIVEM BONS MOMENTOS</span></span></a>
+      <nav class="nav" aria-label="Navegação principal"><a href="#promocoes">Promoções</a><a href="#cardapio">Cardápio</a><a href="#noite">À noite</a><a href="#localizacao">Como chegar</a></nav>
+      <a class="top-cta" href="#cadastro">Cadastre-se <span aria-hidden="true">↓</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Moby Dick Digital</span>
+          <h1>O que tem <em>hoje?</em></h1>
+          <p class="hero-copy">O prato do dia, as ofertas e um caminho direto para falar com o Moby Dick.</p>
+          <div class="demo-note"><span class="demo-dot"></span><span><b>Prévia comercial.</b> Prato e valor abaixo foram copiados de uma arte enviada. Confirme o conteúdo do dia antes de divulgar.</span></div>
+          <div class="actions">
+            <a class="button" href="https://wa.me/5551999219896?text=Ol%C3%A1%2C%20vim%20pelo%20Moby%20Dick%20Digital." target="_blank" rel="noopener">Enviar pelo WhatsApp <span aria-hidden="true">↗</span></a>
+            <button class="button secondary" id="nextPlateButton" type="button">Trocar foto em 1 clique</button>
+          </div>
+        </div>
+        <article class="plate-card" aria-live="polite">
+          <span class="art-label">Exemplo de arte enviada</span>
+          <img class="plate-art" id="plateImage" data-content-image="plate-sobrecoxa" src="media/prato-sobrecoxa.png" alt="Arte do prato do dia: sobrecoxa desossada grelhada acebolada, com arroz, polenta frita e salada">
+          <div class="plate-meta"><div><small>Prato do dia · referência</small><strong id="plateName">Sobrecoxa desossada</strong></div><strong class="price" id="platePrice">R$ 29,90</strong></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="promocoes">
+      <div class="wrap">
+        <div class="section-head"><div><span class="eyebrow">Nas artes recebidas</span><h2>Promoções de hoje</h2></div><p class="section-intro">As peças mostram estas ofertas. Confirme com o restaurante se valores e vigência continuam válidos.</p></div>
+        <div class="offer-grid">
+          <article class="offer"><img data-content-image="offer-entrecot" src="media/promo-entrecot-parmegiana.png" alt="Arte da promoção de entrecot à parmegiana para duas pessoas"><div class="offer-body"><h3>Entrecot à parmegiana</h3><p>Para 2 pessoas · arroz, fritas e mix de folhas com tomate-cereja.</p><div class="offer-foot"><span class="offer-price">R$ 89,90</span><span class="stamp">Validar vigência</span></div></div></article>
+          <article class="offer"><img data-content-image="offer-peixe" src="media/promo-peixe-ao-dore.png" alt="Arte da promoção de peixe à dorê com molho de camarão para duas pessoas"><div class="offer-body"><h3>Peixe à dorê com molho de camarão</h3><p>Para 2 pessoas · arroz, batata sautée e mix de folhas.</p><div class="offer-foot"><span class="offer-price">R$ 89,90</span><span class="stamp">Validar vigência</span></div></div></article>
+          <article class="offer"><img data-content-image="night-chope" src="media/chope-brahma.png" alt="Arte da promoção de chope Brahma 300 ml"><div class="offer-body"><h3>Chope Brahma · 300 ml</h3><p>A arte anuncia promoção para a noite toda.</p><div class="offer-foot"><span class="offer-price">R$ 9,90</span><span class="stamp">Validar vigência</span></div></div></article>
+        </div>
+        <p class="notice">Demonstração: as artes originais incluem chamadas como “Sextou” e “Sábado”. Elas aparecem aqui como referências e não indicam a programação atual.</p>
+        <aside class="qr-card"><div><span class="eyebrow">Aponte a câmera</span><h3>Promoções e novidades, sempre no mesmo link.</h3><p>Este QR code abre a página. As ofertas podem mudar sem trocar o endereço impresso.</p><a class="qr-link" id="promoLink" href="#promocoes">Abrir promoções <span aria-hidden="true">↗</span></a></div><img id="promoQR" src="media/qr-promocoes.png" alt="QR code para abrir as promoções do Moby Dick Digital"></aside>
+      </div>
+    </section>
+
+    <section class="section" id="cardapio">
+      <div class="wrap">
+        <div class="section-head"><div><span class="eyebrow">Seleção das artes</span><h2>Cardápio</h2></div><p class="section-intro">Pratos e preços transcritos das peças enviadas para compor esta prévia.</p></div>
+        <div class="menu-grid">
+          <article class="menu-item"><div><h3>Frango xadrez</h3><p>Batata rústica, arroz e mix de folhas com tomate.</p></div><span class="menu-price">R$ 29,90</span></article>
+          <article class="menu-item"><div><h3>Penne ao molho de queijos e bife à milanesa</h3><p>Mix de folhas com tomate-cereja · arroz opcional na arte.</p></div><span class="menu-price">R$ 29,90</span></article>
+          <article class="menu-item"><div><h3>Sobrecoxa desossada grelhada acebolada</h3><p>Polenta frita, arroz e mix de folhas com tomate.</p></div><span class="menu-price">R$ 29,90</span></article>
+          <article class="menu-item"><div><h3>Ala minuta</h3><p>Entrecot, peixe ou frango · arroz, fritas e salada.</p></div><span class="menu-price">R$ 29,90</span></article>
+          <article class="menu-item"><div><h3>Frango à parmegiana</h3><p>Arroz, batata rústica e mix de folhas.</p></div><span class="menu-price">R$ 29,90</span></article>
+          <article class="menu-item"><div><h3>Entrecot à parmegiana</h3><p>Arroz, fritas e salada · peça de sábado.</p></div><span class="menu-price">R$ 38,90</span></article>
+        </div>
+        <p class="notice">Valores e disponibilidade reproduzem as artes de referência; confirmar antes de usar como cardápio vigente.</p>
+      </div>
+    </section>
+
+    <section class="section" id="noite">
+      <div class="wrap">
+        <div class="section-head"><div><span class="eyebrow">Uma ideia para depois do almoço</span><h2>Hoje à noite no Moby Dick</h2></div></div>
+        <article class="night-card"><div class="night-copy"><span class="stamp">Exemplo de arte · “Sextou”</span><h3>Um chope gelado para acompanhar a noite.</h3><p>A arte enviada destaca chope Brahma de 300 ml. Consulte o Moby Dick para confirmar se a oferta está acontecendo hoje.</p><div class="night-price">R$ 9,90 <span style="font-size:14px;color:#d2c7b4;font-weight:650">· 300 ml</span></div><a class="button" href="https://wa.me/5551999219896?text=Ol%C3%A1%2C%20a%20promo%C3%A7%C3%A3o%20do%20chope%20Brahma%20300%20ml%20est%C3%A1%20valendo%20hoje%3F" target="_blank" rel="noopener">Consultar no WhatsApp <span aria-hidden="true">↗</span></a></div><img data-content-image="night-chope" src="media/chope-brahma.png" alt="Copo de chope Brahma na arte enviada pelo Moby Dick"></article>
+      </div>
+    </section>
+
+    <section class="section" id="localizacao">
+      <div class="wrap">
+        <div class="section-head"><div><span class="eyebrow">Perto de você</span><h2>Como chegar</h2></div><p class="section-intro">Endereço e contato conforme aparecem nas artes do restaurante.</p></div>
+        <div class="place-grid">
+          <article class="place-card"><h3>📍 Moby Dick</h3><p class="address">Av. Paraguassu, 3786<br>Atlântida · Xangri-Lá</p><a class="button secondary" href="https://www.google.com/maps/search/?api=1&query=Av.%20Paraguassu%2C%203786%2C%20Atl%C3%A2ntida%2C%20Xangri-L%C3%A1" target="_blank" rel="noopener">Abrir no mapa <span aria-hidden="true">↗</span></a></article>
+          <article class="place-card"><h3>📱 Fale com o restaurante</h3><p>(51) 99921-9896</p><a class="button secondary" href="https://wa.me/5551999219896?text=Ol%C3%A1%2C%20vim%20pelo%20Moby%20Dick%20Digital." target="_blank" rel="noopener">Abrir conversa no WhatsApp <span aria-hidden="true">↗</span></a></article>
+        </div>
+        <div class="whatsapp"><div><h3>Receba o cardápio do dia no WhatsApp</h3><p>Peça ao Moby Dick para incluir seu contato na lista de envio. A mensagem abre pronta para você enviar.</p></div><a class="button" href="https://wa.me/5551999219896?text=Ol%C3%A1%2C%20quero%20entrar%20na%20lista%20do%20WhatsApp%20para%20receber%20o%20card%C3%A1pio%20do%20dia%20do%20Moby%20Dick." target="_blank" rel="noopener">Pedir entrada na lista <span aria-hidden="true">↗</span></a></div>
+        <form class="signup-card" id="signupForm"><div class="signup-heading"><span class="eyebrow">Cadastro de clientes</span><h3>Receba o cardápio do dia no WhatsApp</h3><p>Informe seus dados para pedir entrada na lista.</p></div><label>Seu nome<input name="name" autocomplete="name" required maxlength="80" placeholder="Como podemos chamar você?"></label><label>Seu WhatsApp<input name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="24" placeholder="(51) 99999-9999"></label><button class="button" type="submit">Enviar cadastro pelo WhatsApp <span aria-hidden="true">↗</span></button><p class="signup-note">O WhatsApp abre com seus dados preenchidos. Confira e toque em Enviar para concluir o pedido de cadastro.</p><output class="signup-status" id="signupStatus" aria-live="polite"></output></form>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="wrap footer-inner"><span>MOBY DICK · “Aqui se vivem bons momentos.”</span><span>Prévia demonstrativa com informações das artes fornecidas.</span><span>Av. Paraguassu, 3786 · Atlântida, Xangri-Lá</span><a href="/dono">Área do dono</a></div></footer>
+  <div class="bottom-bar"><a class="button" href="https://wa.me/5551999219896?text=Ol%C3%A1%2C%20quero%20entrar%20na%20lista%20do%20WhatsApp%20para%20receber%20o%20card%C3%A1pio%20do%20dia%20do%20Moby%20Dick." target="_blank" rel="noopener">Entrar na lista do WhatsApp <span aria-hidden="true">↗</span></a></div>
+  <script>
+    const plates={
+      sobrecoxa:{id:"plate-sobrecoxa",name:"Sobrecoxa desossada",price:"R$ 29,90",image:"media/prato-sobrecoxa.png",alt:"Arte do prato do dia: sobrecoxa desossada grelhada acebolada, com arroz, polenta frita e salada"},
+      "frango-xadrez":{id:"plate-frango-xadrez",name:"Frango xadrez",price:"R$ 29,90",image:"media/prato-frango-xadrez.png",alt:"Arte do prato do dia: frango xadrez com batata rústica, arroz e salada"},
+      penne:{id:"plate-penne",name:"Penne e bife à milanesa",price:"R$ 29,90",image:"media/prato-penne-milanesa.png",alt:"Arte do prato do dia: penne ao molho de queijos e bife à milanesa"},
+      "ala-minuta":{id:"plate-ala-minuta",name:"Ala minuta",price:"R$ 29,90",image:"media/prato-ala-minuta.png",alt:"Arte do prato do dia: ala minuta de entrecot, peixe ou frango"},
+      parmegiana:{id:"plate-parmegiana",name:"Frango à parmegiana",price:"R$ 29,90",image:"media/prato-frango-parmegiana.png",alt:"Arte do prato do dia: frango à parmegiana com arroz, batata rústica e salada"}
+    };
+    const plateIds=Object.keys(plates);let activePlate=0;const imageOverrides={};
+    document.getElementById("nextPlateButton").addEventListener("click",()=>{activePlate=(activePlate+1)%plateIds.length;const item=plates[plateIds[activePlate]],img=document.getElementById("plateImage");document.getElementById("plateName").textContent=item.name;document.getElementById("platePrice").textContent=item.price;img.dataset.contentImage=item.id;img.src=imageOverrides[item.id]||item.image;img.alt=item.alt});
+    document.getElementById("signupForm").addEventListener("submit",event=>{event.preventDefault();const data=new FormData(event.currentTarget),name=String(data.get("name")||"").trim(),phone=String(data.get("phone")||"").trim();if(!name||!phone)return;const message=`Olá, quero me cadastrar para receber o cardápio do dia do Moby Dick. Meu nome é ${name} e meu WhatsApp é ${phone}.`;window.open(`https://wa.me/5551999219896?text=${encodeURIComponent(message)}`,"_blank","noopener");document.getElementById("signupStatus").textContent="Confira seus dados e toque em Enviar no WhatsApp para concluir."});
+    async function loadOwnerImages(){try{const response=await fetch("/api/menu-images");if(!response.ok)return;const data=await response.json();for(const image of data.images||[])imageOverrides[image.id]=image.url;document.querySelectorAll("[data-content-image]").forEach(img=>{const override=imageOverrides[img.dataset.contentImage];if(override)img.src=override})}catch{}}
+    loadOwnerImages();
+    if(window.location.origin!=="null"){const publicUrl=new URL("/moby.html#promocoes",window.location.origin).href;document.getElementById("promoLink").href=publicUrl;}
+  </script>
+</body>
+</html>
