@@ -326,7 +326,18 @@ app.get('/api/establishments/:slug', (req, res) => {
     if (!est) {
       return res.status(404).json({ error: 'Estabelecimento não encontrado' });
     }
-    const items = execSelect('SELECT * FROM menu_items WHERE establishment_id = ? ORDER BY type, name', [est[0]]);
+    const itemsRaw = execSelect('SELECT * FROM menu_items WHERE establishment_id = ? ORDER BY type, name', [est[0]]);
+    const items = itemsRaw.map(item => ({
+      id: item[0],
+      establishment_id: item[1],
+      type: item[2],
+      name: item[3],
+      description: item[4],
+      price: item[5],
+      image_url: item[6],
+      is_available: item[7],
+      created_at: item[8]
+    }));
     const custCount = execSelectOne('SELECT COUNT(*) as count FROM customers WHERE establishment_id = ?', [est[0]]);
     const customers = custCount ? custCount[0] : 0;
 
@@ -355,7 +366,18 @@ app.get('/api/establishments/:id/config', requireAuth, (req, res) => {
       [req.params.id, req.ownerId]
     );
     if (!est) return res.status(404).json({ error: 'Não encontrado' });
-    const items = execSelect('SELECT * FROM menu_items WHERE establishment_id = ?', [est[0]]);
+    const itemsRaw = execSelect('SELECT * FROM menu_items WHERE establishment_id = ?', [est[0]]);
+    const items = itemsRaw.map(item => ({
+      id: item[0],
+      establishment_id: item[1],
+      type: item[2],
+      name: item[3],
+      description: item[4],
+      price: item[5],
+      image_url: item[6],
+      is_available: item[7],
+      created_at: item[8]
+    }));
 
     res.json({
       establishment: {
