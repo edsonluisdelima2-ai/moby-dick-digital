@@ -109,6 +109,39 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors({ credentials: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Funções auxiliares para queries parameterizadas
+function execSelect(sql, params = []) {
+  try {
+    const stmt = db.prepare(sql);
+    if (params.length > 0) stmt.bind(params);
+    const results = [];
+    while (stmt.step()) {
+      results.push(stmt.get());
+    }
+    stmt.free();
+    return results;
+  } catch (error) {
+    console.error('Erro ao executar SELECT:', error);
+    return [];
+  }
+}
+
+function execSelectOne(sql, params = []) {
+  try {
+    const stmt = db.prepare(sql);
+    if (params.length > 0) stmt.bind(params);
+    let result = null;
+    if (stmt.step()) {
+      result = stmt.get();
+    }
+    stmt.free();
+    return result;
+  } catch (error) {
+    console.error('Erro ao executar SELECT:', error);
+    return null;
+  }
+}
+
 const requireAuth = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
@@ -151,10 +184,7 @@ app.post('/api/owner/login', (req, res) => {
     console.log('Email recebido:', email);
     console.log('Senha recebida:', password);
 
-    const result = db.exec('SELECT * FROM owners WHERE email = ?', [email]);
-    console.log('Resultado bruto da query:', JSON.stringify(result));
-
-    const owner = result[0]?.values[0];
+    const owner = execSelectOne('SELECT * FROM owners WHERE email = ?', [email]);
     console.log('Owner encontrado:', owner);
 
     if (!owner) {
@@ -203,8 +233,7 @@ app.post('/api/owner/logout', (req, res) => {
 
 app.get('/api/owner/me', requireAuth, (req, res) => {
   try {
-    const result = db.exec('SELECT id, restaurant_name, email FROM owners WHERE id = ?', [req.ownerId]);
-    const owner = result[0]?.values[0];
+    const owner = execSelectOne('SELECT id, restaurant_name, email FROM owners WHERE id = ?', [req.ownerId]);
     if (!owner) return res.status(404).json({ error: 'Não encontrado' });
     res.json({ id: owner[0], restaurant_name: owner[1], email: owner[2] });
   } catch (error) {
@@ -214,8 +243,7 @@ app.get('/api/owner/me', requireAuth, (req, res) => {
 
 app.get('/api/establishments', requireAuth, (req, res) => {
   try {
-    const result = db.exec('SELECT * FROM establishments WHERE owner_id = ?', [req.ownerId]);
-    const establishments = result[0]?.values || [];
+    const establishments = execSelect('SELECT * FROM establishments WHERE owner_id = ?', [req.ownerId]);
     res.json({
       establishments: establishments.map(est => ({
         id: est[0],
@@ -260,16 +288,14 @@ app.post('/api/establishments', requireAuth, (req, res) => {
 
 app.get('/api/establishments/:slug', (req, res) => {
   try {
-    const estResult = db.exec('SELECT * FROM establishments WHERE slug = ?', [req.params.slug]);
-    if (!estResult[0]) {
+    const est = execSelectOne('SELECT * FROM establishments WHERE slug = ?', [req.params.slug]);
+    if (!est) {
       return res.status(404).json({ error: 'Estabelecimento não encontrado' });
     }
-    const est = estResult[0].values[0];
-    const itemsResult = db.exec('SELECT * FROM menu_items WHERE establishment_id = ? ORDER BY type, name', [est[0]]);
-    const items = itemsResult[0]?.values || [];
-    const custResult = db.exec('SELECT COUNT(*) as count FROM customers WHERE establishment_id = ?', [est[0]]);
-    const customers = custResult[0]?.values[0]?.[0] || 0;
-    
+    const items = execSelect('SELECT * FROM menu_items WHERE establishment_id = ? ORDER BY type, name', [est[0]]);
+    const custCount = execSelectOne('SELECT COUNT(*) as count FROM customers WHERE establishment_id = ?', [est[0]]);
+    const customers = custCount ? custCount[0] : 0;
+
     res.json({
       id: est[0],
       owner_id: est[1],
@@ -290,14 +316,12 @@ app.get('/api/establishments/:slug', (req, res) => {
 
 app.get('/api/establishments/:id/config', requireAuth, (req, res) => {
   try {
-    const estResult = db.exec(
+    const est = execSelectOne(
       'SELECT * FROM establishments WHERE id = ? AND owner_id = ?',
       [req.params.id, req.ownerId]
     );
-    if (!estResult[0]) return res.status(404).json({ error: 'Não encontrado' });
-    const est = estResult[0].values[0];
-    const itemsResult = db.exec('SELECT * FROM menu_items WHERE establishment_id = ?', [est[0]]);
-    const items = itemsResult[0]?.values || [];
+    if (!est) return res.status(404).json({ error: 'Não encontrado' });
+    const items = execSelect('SELECT * FROM menu_items WHERE establishment_id = ?', [est[0]]);
 
     res.json({
       establishment: {
@@ -333,8 +357,8 @@ app.put('/api/establishments/:id', requireAuth, (req, res) => {
 app.post('/api/menu-items', requireAuth, (req, res) => {
   try {
     const { establishment_id, type, name, description, price, image_url } = req.body;
-    const estResult = db.exec('SELECT * FROM establishments WHERE id = ? AND owner_id = ?', [establishment_id, req.ownerId]);
-    if (!estResult[0]) return res.status(401).json({ error: 'Acesso negado' });
+    const est = execSelectOne('SELECT * FROM establishments WHERE id = ? AND owner_id = ?', [establishment_id, req.ownerId]);
+    if (!est) return res.status(401).json({ error: 'Acesso negado' });
     db.run(
       'INSERT INTO menu_items (establishment_id, type, name, description, price, image_url) VALUES (?, ?, ?, ?, ?, ?)',
       [establishment_id, type, name, description, price, image_url]
@@ -359,10 +383,10 @@ app.post('/api/menu-items', requireAuth, (req, res) => {
 app.put('/api/menu-items/:id', requireAuth, (req, res) => {
   try {
     const { name, description, price, is_available } = req.body;
-    const itemResult = db.exec('SELECT * FROM menu_items WHERE id = ?', [req.params.id]);
-    const item = itemResult[0]?.values[0];
-    const estResult = db.exec('SELECT * FROM establishments WHERE id = ? AND owner_id = ?', [item[1], req.ownerId]);
-    if (!estResult[0]) return res.status(401).json({ error: 'Acesso negado' });
+    const item = execSelectOne('SELECT * FROM menu_items WHERE id = ?', [req.params.id]);
+    if (!item) return res.status(404).json({ error: 'Item não encontrado' });
+    const est = execSelectOne('SELECT * FROM establishments WHERE id = ? AND owner_id = ?', [item[1], req.ownerId]);
+    if (!est) return res.status(401).json({ error: 'Acesso negado' });
     db.run(
       'UPDATE menu_items SET name = ?, description = ?, price = ?, is_available = ? WHERE id = ?',
       [name, description, price, is_available, req.params.id]
@@ -377,8 +401,8 @@ app.put('/api/menu-items/:id', requireAuth, (req, res) => {
 app.post('/api/menu-images', requireAuth, (req, res) => {
   try {
     const { establishment_id, menu_item_id, content_id, data_url } = req.body;
-    const estResult = db.exec('SELECT * FROM establishments WHERE id = ? AND owner_id = ?', [establishment_id, req.ownerId]);
-    if (!estResult[0]) return res.status(401).json({ error: 'Acesso negado' });
+    const est = execSelectOne('SELECT * FROM establishments WHERE id = ? AND owner_id = ?', [establishment_id, req.ownerId]);
+    if (!est) return res.status(401).json({ error: 'Acesso negado' });
     const buffer = Buffer.from(data_url.split(',')[1], 'base64');
     const filename = `${Date.now()}-${content_id}.png`;
     const filepath = path.join(__dirname, 'public', 'media', filename);
@@ -397,8 +421,7 @@ app.post('/api/menu-images', requireAuth, (req, res) => {
 app.get('/api/menu-images', (req, res) => {
   try {
     const { establishment_id } = req.query;
-    const result = db.exec('SELECT * FROM images WHERE establishment_id = ?', [establishment_id]);
-    const images = result[0]?.values || [];
+    const images = execSelect('SELECT * FROM images WHERE establishment_id = ?', [establishment_id]);
     res.json({ images });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -424,16 +447,16 @@ app.post('/api/customers', (req, res) => {
 
 app.get('/api/customers/:establishment_id', requireAuth, (req, res) => {
   try {
-    const estResult = db.exec('SELECT * FROM establishments WHERE id = ? AND owner_id = ?', [req.params.establishment_id, req.ownerId]);
-    if (!estResult[0]) return res.status(401).json({ error: 'Acesso negado' });
-    const result = db.exec('SELECT * FROM customers WHERE establishment_id = ? ORDER BY created_at DESC', [req.params.establishment_id]);
-    const customers = result[0]?.values.map(c => ({
+    const est = execSelectOne('SELECT * FROM establishments WHERE id = ? AND owner_id = ?', [req.params.establishment_id, req.ownerId]);
+    if (!est) return res.status(401).json({ error: 'Acesso negado' });
+    const custRows = execSelect('SELECT * FROM customers WHERE establishment_id = ? ORDER BY created_at DESC', [req.params.establishment_id]);
+    const customers = custRows.map(c => ({
       id: c[0],
       establishment_id: c[1],
       name: c[2],
       phone: c[3],
       created_at: c[4]
-    })) || [];
+    }));
     res.json({ customers });
   } catch (error) {
     res.status(500).json({ error: error.message });

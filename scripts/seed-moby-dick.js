@@ -50,9 +50,10 @@ async function seedDatabase() {
     console.log('✅ Owner ID:', ownerId);
 
     // Verificar que o usuário foi realmente inserido
-    const verifyResult = db.exec('SELECT * FROM owners WHERE email = ?', ['moby@example.com']);
-    if (verifyResult[0]) {
-      const verifyOwner = verifyResult[0].values[0];
+    const stmt = db.prepare('SELECT * FROM owners WHERE email = ?');
+    stmt.bind(['moby@example.com']);
+    if (stmt.step()) {
+      const verifyOwner = stmt.get();
       console.log('🔍 Verificação do usuário inserido:');
       console.log('   ID:', verifyOwner[0]);
       console.log('   Restaurant:', verifyOwner[1]);
@@ -62,6 +63,7 @@ async function seedDatabase() {
     } else {
       console.error('❌ ERRO: Usuário não foi encontrado após inserção!');
     }
+    stmt.free();
 
     db.run(
       'INSERT INTO establishments (owner_id, restaurant_name, slug, address, whatsapp, google_maps_url) VALUES (?, ?, ?, ?, ?, ?)',
