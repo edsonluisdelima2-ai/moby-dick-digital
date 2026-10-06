@@ -80,6 +80,64 @@ async function initDB() {
     FOREIGN KEY (establishment_id) REFERENCES establishments(id),
     FOREIGN KEY (menu_item_id) REFERENCES menu_items(id)
   )`);
+
+  // Criar usuário padrão se o banco estiver vazio
+  try {
+    const ownerCheck = db.exec('SELECT COUNT(*) as count FROM owners');
+    const ownerCount = ownerCheck[0]?.values[0][0] || 0;
+
+    if (ownerCount === 0) {
+      console.log('📌 Criando usuário padrão...');
+      const hashedPassword = bcrypt.hashSync('moby123', 10);
+      db.run(
+        'INSERT INTO owners (restaurant_name, email, password) VALUES (?, ?, ?)',
+        ['Moby Dick', 'moby@example.com', hashedPassword]
+      );
+
+      const ownerResult = db.exec('SELECT id FROM owners WHERE email = ?', ['moby@example.com']);
+      const ownerId = ownerResult[0]?.values[0][0];
+
+      if (ownerId) {
+        // Criar estabelecimento padrão
+        db.run(
+          'INSERT INTO establishments (owner_id, restaurant_name, slug, address, whatsapp, google_maps_url) VALUES (?, ?, ?, ?, ?, ?)',
+          [ownerId, 'Moby Dick', 'moby-dick', 'Av. Paraguassu, 3786, Atlântida, Xangri-Lá', '5551999219896', 'https://www.google.com/maps/search/?api=1&query=Av.%20Paraguassu%2C%203786%2C%20Atl%C3%A2ntida%2C%20Xangri-L%C3%A1']
+        );
+
+        const estResult = db.exec('SELECT id FROM establishments WHERE owner_id = ?', [ownerId]);
+        const establishmentId = estResult[0]?.values[0][0];
+
+        if (establishmentId) {
+          // Criar itens de menu padrão
+          const items = [
+            [establishmentId, 'prato-do-dia', 'Sobrecoxa desossada', 'Grelhada acebolada com polenta frita, arroz e mix de folhas', 29.90, '/media/prato-sobrecoxa.png', 1],
+            [establishmentId, 'prato-do-dia', 'Ala minuta', 'Entrecot, peixe ou frango com arroz, fritas e salada', 29.90, '/media/prato-ala-minuta.png', 1],
+            [establishmentId, 'prato-do-dia', 'Frango à parmegiana', 'Arroz, batata rústica e mix de folhas', 29.90, '/media/prato-frango-parmegiana.png', 1],
+            [establishmentId, 'promocao', 'Entrecot à parmegiana', 'Para 2 pessoas com arroz, fritas e salada', 89.90, '/media/promo-entrecot-parmegiana.png', 1],
+            [establishmentId, 'promocao', 'Peixe à dorê com molho de camarão', 'Para 2 pessoas com arroz, batata sautée e salada', 89.90, '/media/promo-peixe-ao-dore.png', 1],
+            [establishmentId, 'promocao', 'Chope Brahma 300 ml', 'Promoção à noite toda', 9.90, '/media/chope-brahma.png', 1],
+            [establishmentId, 'cardapio', 'Frango xadrez', 'Batata rústica, arroz e mix de folhas com tomate', 29.90, '/media/prato-frango-xadrez.png', 1],
+            [establishmentId, 'cardapio', 'Penne ao molho de queijos e bife à milanesa', 'Mix de folhas com tomate-cereja e arroz opcional', 29.90, '/media/prato-penne-milanesa.png', 1],
+            [establishmentId, 'cardapio', 'Entrecot à parmegiana', 'Arroz, fritas e salada', 38.90, null, 1],
+          ];
+
+          items.forEach(item => {
+            db.run(
+              'INSERT INTO menu_items (establishment_id, type, name, description, price, image_url, is_available) VALUES (?, ?, ?, ?, ?, ?, ?)',
+              item
+            );
+          });
+        }
+      }
+
+      saveDB();
+      console.log('✅ Usuário padrão criado!');
+      console.log('   Email: moby@example.com');
+      console.log('   Senha: moby123');
+    }
+  } catch (error) {
+    console.error('⚠️ Erro ao criar usuário padrão:', error.message);
+  }
 }
 
 function saveDB() {
