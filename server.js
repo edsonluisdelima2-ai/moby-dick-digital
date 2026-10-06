@@ -221,6 +221,24 @@ app.get('/api/owner/me', requireAuth, (req, res) => {
   }
 });
 
+app.get('/api/establishments', requireAuth, (req, res) => {
+  try {
+    const result = db.exec('SELECT id, owner_id, restaurant_name, slug, address, whatsapp, google_maps_url FROM establishments WHERE owner_id = ?', [req.session.ownerId]);
+    const establishments = result[0]?.values?.map(row => ({
+      id: row[0],
+      owner_id: row[1],
+      restaurant_name: row[2],
+      slug: row[3],
+      address: row[4],
+      whatsapp: row[5],
+      google_maps_url: row[6]
+    })) || [];
+    res.json({ establishments });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post('/api/establishments', requireAuth, (req, res) => {
   try {
     const { restaurant_name, slug, address, whatsapp, google_maps_url } = req.body;
