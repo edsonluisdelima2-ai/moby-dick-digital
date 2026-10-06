@@ -20,14 +20,14 @@ let db;
 async function initDB() {
   const SQL = await initSqlJs();
   const dbPath = path.join(__dirname, 'data', 'moby.db');
-  
+
   let data;
   if (fs.existsSync(dbPath)) {
     data = fs.readFileSync(dbPath);
   }
-  
+
   db = new SQL.Database(data);
-  
+
   db.run(`CREATE TABLE IF NOT EXISTS owners (
     id INTEGER PRIMARY KEY,
     restaurant_name TEXT UNIQUE NOT NULL,
@@ -35,6 +35,21 @@ async function initDB() {
     password TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
+
+  // Verificar se o banco está vazio e popular com dados de teste se necessário
+  const checkOwners = db.exec('SELECT COUNT(*) as count FROM owners');
+  const ownerCount = checkOwners[0]?.values[0]?.[0] || 0;
+
+  if (ownerCount === 0) {
+    console.log('📝 Banco vazio detectado. Inserindo usuário de teste...');
+    const hashedPassword = bcrypt.hashSync('moby123', 10);
+    db.run(
+      'INSERT INTO owners (restaurant_name, email, password) VALUES (?, ?, ?)',
+      ['Moby Dick', 'moby@example.com', hashedPassword]
+    );
+    console.log('✅ Usuário de teste criado: moby@example.com / moby123');
+    saveDB();
+  }
 
   db.run(`CREATE TABLE IF NOT EXISTS establishments (
     id INTEGER PRIMARY KEY,
